@@ -1,6 +1,7 @@
+
+from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -8,7 +9,7 @@ import numpy as np
 
 app = FastAPI()
 
-# Enable CORS to allow frontend requests from http://localhost:3000
+# Enable CORS to allow frontend 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],
@@ -42,7 +43,6 @@ def recommend(history: History):
     history_ids = history.history
     if not history_ids:
         raise HTTPException(status_code=400, detail="Browsing history is empty")
-
     # Get indices of products in browsing history
     history_indices = []
     for pid in history_ids:
@@ -51,7 +51,6 @@ def recommend(history: History):
             raise HTTPException(status_code=404, detail=f"Product ID {pid} not found")
         history_indices.append(idx[0])
     history_indices = np.array(history_indices)
-
     # Get indices of products not in history
     other_indices = np.array([i for i in range(len(products)) if i not in history_indices])
 
