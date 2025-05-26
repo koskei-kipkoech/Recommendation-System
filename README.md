@@ -1,66 +1,238 @@
 # Product Recommendation System
 
-A full-stack application that demonstrates a product recommendation system using TF-IDF and cosine similarity.
+A full-stack application that demonstrates an AI-powered product recommendation system using TF-IDF vectorization and cosine similarity algorithms.
 
-## Project Structure
+![Smart Shop](https://via.placeholder.com/800x450.png?text=Smart+Shop+Recommendation+System)
 
-This project consists of two main components:
+## Project Overview
 
-### Backend
+This project showcases a modern approach to product recommendations by analyzing browsing history and finding similar products using natural language processing techniques. The system consists of two main components:
+
+### Backend (FastAPI)
 
 - Located in the `/backend` directory
-- Built with FastAPI and scikit-learn
-- Provides API endpoints for product listing and recommendations
-- Uses TF-IDF vectorization and cosine similarity for recommendation algorithm
+- Built with FastAPI, pandas, scikit-learn, and numpy
+- Provides RESTful API endpoints for product listing and recommendations
+- Implements TF-IDF vectorization and cosine similarity for recommendation algorithm
+- Handles CORS for seamless frontend integration
 
-### Frontend
+### Frontend (Next.js)
 
 - Located in the `/frontend` directory
-- Built with Next.js, React, and TypeScript
-- Provides a user interface for browsing products and getting recommendations
-- Uses Tailwind CSS for styling
+- Built with Next.js, React, TypeScript, and Tailwind CSS
+- Provides a responsive user interface for browsing products and getting recommendations
+- Features interactive browsing history tracking and visual feedback
+- Supports both light and dark modes
 
 ## Getting Started
 
-### 1. Start the Backend
+### Prerequisites
+
+- **Backend**: Python 3.9+, pipenv
+- **Frontend**: Node.js 18+, npm or yarn
+
+### 1. Setting Up the Backend
 
 ```bash
+# Navigate to the backend directory
 cd backend
-pipenv install  # Install dependencies from Pipfile
-pipenv shell    # Activate virtual environment
-uvicorn main:app --reload  # Start the server
+
+# Install dependencies using pipenv
+pipenv install
+
+# Activate the virtual environment
+pipenv shell
+
+# Start the FastAPI server with hot-reload
+uvicorn main:app --reload
 ```
 
-The backend will be available at http://localhost:8000
+The backend server will be available at http://localhost:8000
 
-### 2. Start the Frontend
+You can also access the API documentation at http://localhost:8000/docs
+
+### 2. Setting Up the Frontend
 
 ```bash
+# Navigate to the frontend directory
 cd frontend
-npm install  # Install dependencies
-npm run dev  # Start the development server
+
+# Install dependencies
+npm install
+# or
+yarn install
+
+# Start the development server
+npm run dev
+# or
+yarn dev
 ```
 
-The frontend will be available at http://localhost:3000
+The frontend application will be available at http://localhost:3000
 
 ## How It Works
 
-1. The system uses a sample product dataset with tags for each product
-2. When a user browses products, their browsing history is tracked
-3. The recommendation algorithm uses TF-IDF to vectorize product tags
-4. Cosine similarity is calculated between products in the browsing history and other products
-5. Products with the highest similarity scores are recommended to the user
+### Recommendation Algorithm
+
+1. **Data Preparation**: The system uses a product dataset with tags for each product
+2. **Vectorization**: TF-IDF (Term Frequency-Inverse Document Frequency) is used to convert product tags into numerical vectors
+3. **Similarity Calculation**: When a user browses products, the system tracks their history and calculates cosine similarity between those products and others in the catalog
+4. **Ranking**: Products with the highest similarity scores are recommended to the user
+
+### Data Flow
+
+1. **Initial Load**: The frontend fetches all products from the backend's `/products` endpoint
+2. **User Interaction**: As users click on products, they're added to the browsing history with visual feedback
+3. **Recommendation Request**: When the user clicks "Get Recommendations", their browsing history is sent to the backend's `/recommend` endpoint
+4. **Processing**: The backend analyzes the browsing history using the pre-computed similarity matrix
+5. **Response**: The backend returns the top 3 most similar products not already in the browsing history
+6. **Display**: The frontend displays the recommended products in the UI
+
+## API Endpoints
+
+### GET /products
+
+Returns all available products.
+
+**Response:**
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Smartphone X",
+    "price": 799.99,
+    "category": "Electronics",
+    "tags": "smartphone mobile camera battery"
+  },
+  ...
+]
+```
+
+### POST /recommend
+
+Generates product recommendations based on browsing history.
+
+**Request Body:**
+
+```json
+{
+  "history": [1, 3, 5]
+}
+```
+
+**Response:**
+
+```json
+{
+  "recommendations": [
+    {
+      "id": 2,
+      "name": "Laptop Pro",
+      "price": 1299.99,
+      "category": "Electronics",
+      "tags": "laptop computer high-performance battery"
+    },
+    ...
+  ]
+}
+```
+
+## Project Structure
+
+```
+/recommendation/
+├── backend/
+│   ├── main.py           # FastAPI application with recommendation logic
+│   ├── products.csv      # Product dataset with tags
+│   ├── Pipfile          # Python dependencies
+│   └── README.md        # Backend documentation
+│
+├── frontend/
+│   ├── app/             # Next.js application
+│   │   ├── page.tsx     # Main application component
+│   │   └── layout.tsx   # Root layout component
+│   ├── public/          # Static assets
+│   ├── package.json     # JavaScript dependencies
+│   └── README.md        # Frontend documentation
+│
+└── README.md            # Project overview (this file)
+```
 
 ## Technologies Used
 
-- **Backend**: FastAPI, pandas, scikit-learn, numpy
-- **Frontend**: Next.js, React, TypeScript, Tailwind CSS
-- **Data Processing**: TF-IDF vectorization, cosine similarity
+### Backend
+
+- **FastAPI**: Modern, high-performance web framework for building APIs
+- **pandas**: Data manipulation and analysis library
+- **scikit-learn**: Machine learning library for TF-IDF and cosine similarity
+- **numpy**: Numerical computing library
+- **pipenv**: Python dependency management
+
+### Frontend
+
+- **Next.js**: React framework for production-grade applications
+- **React**: JavaScript library for building user interfaces
+- **TypeScript**: Typed JavaScript for better developer experience
+- **Tailwind CSS**: Utility-first CSS framework for rapid UI development
+
+## Development
+
+### Building for Production
+
+#### Backend
+
+```bash
+# From the backend directory
+pipenv install --deploy
+```
+
+#### Frontend
+
+```bash
+# From the frontend directory
+npm run build
+# or
+yarn build
+
+# Start the production server
+npm run start
+# or
+yarn start
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Backend Connection Errors**
+
+   - Ensure the backend server is running at http://localhost:8000
+   - Check that CORS is properly configured in the backend
+
+2. **Missing Dependencies**
+
+   - For backend: `pipenv install`
+   - For frontend: `npm install` or `yarn install`
+
+3. **Data Format Issues**
+   - Ensure the `products.csv` file has the correct format with id, name, price, category, and tags columns
 
 ## Future Improvements
 
-- Add user authentication
-- Implement more advanced recommendation algorithms
-- Add product images and more detailed information
-- Implement caching for better performance
-- Add unit and integration tests
+- User authentication and personalized recommendations
+- More advanced recommendation algorithms (collaborative filtering, deep learning)
+- Product images and more detailed information
+- Performance optimizations (caching, pagination)
+- Comprehensive test suite (unit, integration, and end-to-end tests)
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Acknowledgements
+
+- FastAPI team for the backend framework
+- Next.js team for the frontend framework
+- scikit-learn for the recommendation algorithm implementation
+- Tailwind CSS for the utility-first CSS framework
