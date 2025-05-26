@@ -69,7 +69,7 @@ export default function Home() {
         body: JSON.stringify({ history })
       });
       
-      if (!res.ok) throw new Error('Failed to fetch recommendations');
+      if (!res.ok) throw new Error('Failed to fetch recommendations !!');
       
       const data = await res.json();
       setRecommendations(data.recommendations);
@@ -123,7 +123,7 @@ export default function Home() {
                 Available Products
               </h2>
               <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-                Click on products to add them to your browsing history
+                Click on Products to add them to your Browsing History
               </p>
               
               {isLoading && products.length === 0 ? (
@@ -157,6 +157,7 @@ export default function Home() {
               )}
             </div>
           </div>
+
 
           {/* History and Recommendations Column */}
           <div>
@@ -228,6 +229,7 @@ export default function Home() {
                 Recommended For You
               </h2>
               
+
               {recommendations.length > 0 ? (
                 <ul className="border dark:border-gray-700 rounded-lg divide-y divide-gray-200 dark:divide-gray-700">
                   {recommendations.map(product => (
@@ -264,7 +266,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="mt-12 py-6 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
         <div className="container mx-auto px-6 text-center text-sm text-gray-600 dark:text-gray-400">
-          <p>© 2023 Smart Shop. All rights reserved.</p>
+          <p>© 2023 Smart Shop. Patrick Kipkoech.</p>
           <p className="mt-2">Powered by AI recommendation engine</p>
         </div>
       </footer>
